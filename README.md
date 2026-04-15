@@ -45,8 +45,9 @@ Archivos: punto2/NoSQL.g4, punto2/test.nosql
 Se demostro que la gramatica propuesta en el enunciado sigue
 siendo ambigua mediante el contraejemplo:
 
+```
   if e1 then if e2 then otras else otras
-
+```
 Esta cadena produce dos arboles de derivacion distintos, lo que
 prueba formalmente la ambiguedad. Se propuso una gramatica
 corregida que separa las proposiciones en "emparejadas"
