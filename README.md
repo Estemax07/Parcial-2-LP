@@ -1,18 +1,17 @@
 # Parcial 2 - Lenguajes de Programacion 2026-1
 
-## Descripcion general
+## Descripcion
 
-Este repositorio contiene la solucion completa del segundo parcial
-de la materia Lenguajes de Programacion. Se implementaron 5 puntos
-que cubren diseno de gramaticas, parsing, ambiguedad y algoritmos.
+Este repositorio contiene la solucion completa del segundo parcial. Se implementaron los 5 puntos
+cuales cubren diseno de gramaticas, parsing, ambiguedad y algoritmos.
 
 ---
 
 ## Punto 1 - Gramatica CRUD para BD No Relacional
 
-Se disenio una gramatica formal en notacion EBNF para un lenguaje
+Se diseno una gramatica formal en notacion EBNF para un lenguaje
 que permite hacer las 4 operaciones basicas (CRUD) sobre una base
-de datos no relacional estilo documento (similar a MongoDB).
+de datos no relacional estilo documento.
 
 Operaciones cubiertas:
 - INSERT INTO: crear documentos en una coleccion
