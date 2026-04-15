@@ -1,0 +1,28 @@
+=== PARSER DESCENDENTE RECURSIVO ===
+
+Prueba: Asignacion
+Codigo: x = 10;
+Resultado:
+x = 10.0
+Variables: {'x': 10.0}
+----------------------------------------
+Prueba: Expresion
+Codigo: y = 3 * 4 + 2;
+Resultado:
+y = 14.0
+Variables: {'y': 14.0}
+----------------------------------------
+Prueba: If
+Codigo: z = 5; if (z > 3) { z = z + 1; }
+Resultado:
+z = 5.0
+z = 6.0
+Variables: {'z': 6.0}
+----------------------------------------
+Prueba: If-Else
+Codigo: a = 8; if (a > 10) { a = 100; } else { a = 0; }
+Resultado:
+a = 8.0
+a = 0.0
+Variables: {'a': 0.0}
+----------------------------------------

@@ -1,6 +1,10 @@
 import re
 
+#tokenizador
+
 PATRONES = [
+    ('IF',     r'\bif\b'),
+    ('ELSE',   r'\belse\b'),
     ('NUMERO', r'\d+(\.\d+)?'),
     ('ID',     r'[a-zA-Z_]\w*'),
     ('OP_REL', r'==|!=|<=|>=|<|>'),
@@ -29,6 +33,8 @@ def tokenizar(codigo):
     tokens.append(('EOF', ''))
     return tokens
 
+#parser
+
 class Parser:
     def __init__(self, tokens):
         self.tokens = tokens
@@ -40,7 +46,7 @@ class Parser:
     def consume(self, tipo=None):
         tok = self.tokens[self.pos]
         if tipo and tok[0] != tipo:
-            raise SyntaxError(f"Se esperaba '{tipo}', se encontro '{tok[1]}' ({tok[0]})")
+            raise SyntaxError(f"Se esperaba '{tipo}', se encontro '{tok[1]}'")
         self.pos += 1
         return tok
 
@@ -52,12 +58,13 @@ class Parser:
 
     def sentencia(self):
         tk = self.peek()
+
         if tk[0] == 'ID' and self.tokens[self.pos+1][0] == 'ASIGN':
             return self.asignacion()
-        elif tk == ('ID', 'if'):
+        elif tk[0] == 'IF':
             return self.condicional()
         else:
-            raise SyntaxError(f"Sentencia invalida: '{tk[1]}'")
+            raise SyntaxError(f"Sentencia invalida: {tk}")
 
     def asignacion(self):
         nombre = self.consume('ID')[1]
@@ -67,15 +74,18 @@ class Parser:
         return ('asignacion', nombre, expresion)
 
     def condicional(self):
-        self.consume('ID')
+        self.consume('IF')
         self.consume('LPAREN')
         cond = self.condicion()
         self.consume('RPAREN')
+
         then_b = self.bloque()
-        if self.peek() == ('ID', 'else'):
-            self.consume('ID')
+
+        if self.peek()[0] == 'ELSE':
+            self.consume('ELSE')
             else_b = self.bloque()
             return ('if_else', cond, then_b, else_b)
+
         return ('if', cond, then_b)
 
     def bloque(self):
@@ -108,6 +118,7 @@ class Parser:
 
     def factor(self):
         tk = self.peek()
+
         if tk[0] == 'LPAREN':
             self.consume('LPAREN')
             e = self.expr()
@@ -117,57 +128,90 @@ class Parser:
             return ('num', float(self.consume()[1]))
         elif tk[0] == 'ID':
             return ('id', self.consume()[1])
-        raise SyntaxError(f"Factor invalido: '{tk[1]}'")
+
+        raise SyntaxError(f"Factor invalido: {tk}")
+
+#evaluador
 
 def evaluar(nodo, env):
     t = nodo[0]
+
     if t == 'programa':
-        for s in nodo[1]: evaluar(s, env)
+        for s in nodo[1]:
+            evaluar(s, env)
+
     elif t == 'asignacion':
         env[nodo[1]] = evaluar(nodo[2], env)
-        print(f"  {nodo[1]} = {env[nodo[1]]}")
+        print(f"{nodo[1]} = {env[nodo[1]]}")
+
     elif t == 'if':
-        if evaluar(nodo[1], env): evaluar(nodo[2], env)
+        if evaluar(nodo[1], env):
+            evaluar(nodo[2], env)
+
     elif t == 'if_else':
-        if evaluar(nodo[1], env): evaluar(nodo[2], env)
-        else: evaluar(nodo[3], env)
+        if evaluar(nodo[1], env):
+            evaluar(nodo[2], env)
+        else:
+            evaluar(nodo[3], env)
+
     elif t == 'bloque':
-        for s in nodo[1]: evaluar(s, env)
+        for s in nodo[1]:
+            evaluar(s, env)
+
     elif t == 'condicion':
-        a = evaluar(nodo[1], env); b = evaluar(nodo[3], env)
-        return {'==':a==b,'!=':a!=b,'>':a>b,'<':a=':a>=b,'<=':a<=b}[nodo[2]]
+        a = evaluar(nodo[1], env)
+        b = evaluar(nodo[3], env)
+        return {
+            '==': a == b,
+            '!=': a != b,
+            '>':  a > b,
+            '<':  a < b,
+            '>=': a >= b,
+            '<=': a <= b
+        }[nodo[2]]
+
     elif t == 'binop':
-        a = evaluar(nodo[2], env); b = evaluar(nodo[3], env)
-        return {'+':a+b,'-':a-b,'*':a*b,'/':a/b}[nodo[1]]
-    elif t == 'num': return nodo[1]
-    elif t == 'id': return env.get(nodo[1], 0)
+        a = evaluar(nodo[2], env)
+        b = evaluar(nodo[3], env)
+        return {
+            '+': a + b,
+            '-': a - b,
+            '*': a * b,
+            '/': a / b
+        }[nodo[1]]
+
+    elif t == 'num':
+        return nodo[1]
+
+    elif t == 'id':
+        return env.get(nodo[1], 0)
+
+#pruebas
 
 PRUEBAS = [
-    ("Asignacion simple",
-     "x = 10;"),
-    ("Expresion aritmetica",
-     "y = 3 * 4 + 2;"),
-    ("If sin else",
-     "z = 5; if (z > 3) { z = z + 1; }"),
-    ("If con else",
-     "a = 8; if (a > 10) { a = 100; } else { a = 0; }"),
-    ("Anidado",
-     "n = 15; if (n > 10) { n = n - 5; if (n > 5) { n = 0; } }"),
+    ("Asignacion", "x = 10;"),
+    ("Expresion", "y = 3 * 4 + 2;"),
+    ("If", "z = 5; if (z > 3) { z = z + 1; }"),
+    ("If-Else", "a = 8; if (a > 10) { a = 100; } else { a = 0; }"),
 ]
 
 if __name__ == "__main__":
-    print("=== PARSER DESCENDENTE RECURSIVO ===")
-    print()
+    print("=== PARSER DESCENDENTE RECURSIVO ===\n")
+
     for nombre, codigo in PRUEBAS:
         print(f"Prueba: {nombre}")
         print(f"Codigo: {codigo}")
+
         try:
             tokens = tokenizar(codigo)
-            arbol  = Parser(tokens).programa()
-            env    = {}
+            arbol = Parser(tokens).programa()
+            env = {}
+
             print("Resultado:")
             evaluar(arbol, env)
-            print(f"Variables finales: {env}")
+            print("Variables:", env)
+
         except SyntaxError as e:
-            print(f"Error de sintaxis: {e}")
-        print("-" * 45)
+            print("Error:", e)
+
+        print("-" * 40)
