@@ -1,0 +1,44 @@
+GRAMATICA ORIGINAL PROPUESTA:
+------------------------------
+prop          --> if expr then prop
+              |  prop_emparejada
+
+prop_emparejada --> if expr then prop_emparejada else prop
+              |  otras
+
+
+DEMOSTRACION QUE SIGUE SIENDO AMBIGUA:
+----------------------------------------
+Cadena contraejemplo:
+  if e1 then if e2 then otras else otras
+
+Esta cadena produce DOS arboles de derivacion distintos:
+
+ARBOL 1 (el else se asocia con el if e2, el mas cercano):
+  prop
+  --> if e1 then prop
+                 --> prop_emparejada
+                       --> if e2 then prop_emp else prop
+                                      --> otras       --> otras
+
+ARBOL 2 (el else se asocia con el if e1, el mas lejano):
+  prop
+  --> prop_emparejada
+        --> if e1 then prop_emp else prop
+                       --> if e2 then otras
+                   --> otras
+
+Conclusion: como existe mas de un arbol para la misma cadena,
+la gramatica propuesta SIGUE SIENDO AMBIGUA.
+
+
+GRAMATICA CORREGIDA (no ambigua):
+-----------------------------------
+prop         --> prop_emp | prop_no_emp
+
+prop_emp     --> if expr then prop_emp else prop_emp
+             |   otras
+
+prop_no_emp  --> if expr then prop
+             |   if expr then prop_emp else prop_no_emp
+

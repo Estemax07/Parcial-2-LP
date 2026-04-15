@@ -1,0 +1,13 @@
+# CREATE
+INSERT INTO usuarios VALUES { "nombre": "Ana", "edad": 30 };
+INSERT INTO productos VALUES { "nombre": "Laptop", "precio": 1500 };
+
+# READ
+FIND FROM usuarios WHERE edad > 25 FIELDS { nombre, email } LIMIT 10;
+FIND FROM productos WHERE precio < 2000;
+
+# UPDATE
+UPDATE usuarios WHERE nombre == "Ana" SET { "edad": 31 };
+
+# DELETE
+DELETE FROM usuarios WHERE activo == false;

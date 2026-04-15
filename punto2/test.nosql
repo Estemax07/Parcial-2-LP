@@ -1,0 +1,4 @@
+INSERT INTO usuarios VALUES { "nombre": "Ana", "edad": 30 };
+FIND FROM usuarios WHERE edad > 25 LIMIT 5;
+UPDATE usuarios WHERE nombre == "Ana" SET { "edad": 31 };
+DELETE FROM usuarios WHERE activo == false;
