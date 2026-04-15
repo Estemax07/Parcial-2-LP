@@ -18,9 +18,9 @@ Operaciones cubiertas:
 - FIND FROM:  leer documentos con filtros, proyeccion y limite
 - UPDATE:     modificar campos de documentos existentes
 - DELETE FROM: eliminar documentos segun condicion
-
+```
 Archivos: punto1/gramatica_nosql.txt, punto1/ejemplos.nosql
-
+```
 ---
 
 ## Punto 2 - Implementacion en ANTLR4
@@ -35,9 +35,9 @@ Como ejecutar:
   antlr4 NoSQL.g4
   javac *.java
   grun NoSQL programa -tree test.nosql
-
+```
 Archivos: punto2/NoSQL.g4, punto2/test.nosql
-
+```
 ---
 
 ## Punto 3 - Ambiguedad en if-then-else
@@ -56,9 +56,9 @@ corregida que separa las proposiciones en "emparejadas"
 Como ejecutar:
   cd punto3
   python3 arboles.py
-
+```
 Archivos: punto3/ambiguedad.txt, punto3/arboles.py
-
+```
 ---
 
 ## Punto 4 - Parser CYK vs Parser Predictivo LL
@@ -74,9 +74,9 @@ El resultado muestra que LL es significativamente mas rapido.
 Como ejecutar:
   cd punto4
   python3 cyk_parser.py
-
+```
 Archivos: punto4/cyk_parser.py, punto4/resultados.txt
-
+```
 ---
 
 ## Punto 5 - Parser Descendente Recursivo
@@ -94,9 +94,9 @@ de cada variable.
 Como ejecutar:
   cd punto5
   python3 parser_recursivo.py
-
+```
 Archivos: punto5/parser_recursivo.py, punto5/resultados_parser.txt
-
+```
 ---
 
 ## Requisitos
