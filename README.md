@@ -81,21 +81,26 @@ Archivos: punto4/cyk_parser.py, punto4/resultados.txt
 
 ## Punto 5 - Parser Descendente Recursivo
 
-Se diseno una gramatica y se implemento un parser descendente
-recursivo en Python que soporta:
-- Asignaciones: x = expr;
-- Condicionales: if (cond) { } else { }
-- Expresiones aritmeticas con precedencia correcta
+Se diseñó una gramática libre de recursión izquierda y se implementó un parser descendente recursivo en Python que soporta:
 
-Se incluye un interprete que evalua el arbol sintatico
-y ejecuta las instrucciones mostrando el valor final
-de cada variable.
+Asignaciones: x = expr;  
+Condicionales: if (cond) { } else { }  
+Expresiones aritméticas con precedencia correcta  
 
-Como ejecutar:
-  cd punto5
-  python3 parser_recursivo.py
+Cada regla de la gramática se implementa como una función, siguiendo el enfoque de análisis descendente recursivo.
+
+El emparejamiento de tokens se realiza mediante la función `consume`, la cual verifica el token actual y avanza en la entrada.
+
+Se incluye un intérprete que evalúa el árbol sintáctico y ejecuta las instrucciones mostrando el valor final de cada variable.
+
+Como ejecutar:  
+cd punto5  
+python3 parser_recursivo.py  
+ 
 ```
-Archivos: punto5/parser_recursivo.py, punto5/resultados_parser.txt
+Archivos:  
+punto5/parser_recursivo.py  
+punto5/resultados_parser.txt
 ```
 ---
 
